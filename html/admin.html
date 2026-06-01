@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Control - Valle al Día</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" />
+    <link rel="stylesheet" href="../css/general_style.css">
+    <link rel="stylesheet" href="../css/admin_style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/admin_script.js" defer></script>
+
+</head>
+<body>
+
+    <header class="app-header">
+        <div class="logo-container">
+            <img src="../imagenes/logo.png" alt="Logo Valle al Día" class="logo-img">
+            <span class="logo-text">Panel</span>
+        </div>
+
+        <button id="btn-logout" class="btn-secreto" title="Cerrar sesión" style="opacity: 1; background: none; border: none; cursor: pointer;">
+            <span class="material-symbols-rounded">logout</span>
+        </button>
+    </header>
+
+    <main class="app-main">
+        <div class="panel-container">
+            <h2 class="titulo-seccion" style="border: none; margin-bottom: 5px;">Publicar Noticia</h2>
+            <p style="color: #666; font-size: 0.9rem; margin-bottom: 25px;">Rellena los datos para que aparezcan en el tablón principal.</p>
+
+            <form id="form-noticia">
+                <div class="form-group">
+                    <label for="titulo">Título de la noticia</label>
+                    <input type="text" id="titulo" required placeholder="Ej: Torneo de Tuta este finde">
+                </div>
+
+                <div class="form-group">
+                    <label for="contenido">Descripción detallada</label>
+                    <textarea id="contenido" rows="5" required placeholder="Escribe aquí toda la información..."></textarea>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="urgente">
+                    <label for="urgente">Marcar como URGENTE (saldrá en rojo)</label>
+                </div>
+
+                <button type="submit" class="btn-principal" id="btn-publicar">
+                    <span class="material-symbols-rounded">send</span>
+                    Publicar Noticia
+                </button>
+
+                <p id="mensaje-exito" class="feedback-msg exito">¡Noticia publicada con éxito!</p>
+                <p id="mensaje-error-panel" class="feedback-msg error">Hubo un error al publicar.</p>
+            </form>
+        </div>
+    </main>
+
+</body>
+</html>

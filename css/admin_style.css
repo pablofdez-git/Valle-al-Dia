@@ -1,0 +1,109 @@
+/* --- ESPECÍFICO DEL PANEL DE CONTROL (ADMIN) --- */
+
+.app-main {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.panel-container {
+    width: 100%; /* Adaptable a móvil */
+    max-width: 500px; /* Un poco más ancho que el login porque lleva texto */
+    margin-top: 30px;
+    background: var(--blanco);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border-top: 5px solid var(--verde-oscuro);
+}
+
+/* Reutilizamos los estilos de input y botón del login para esta caja */
+.form-group { margin-bottom: 20px; }
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--verde-oscuro);
+    font-size: 0.9rem;
+}
+
+.form-group input, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus, textarea:focus { border-color: var(--verde-oscuro); }
+
+textarea {
+    resize: vertical; /* Solo deja estirarlo hacia abajo, no a los lados */
+}
+
+.btn-principal {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--verde-oscuro);
+    color: var(--blanco);
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-principal:hover { background-color: #12351f; }
+
+/* Checkbox de urgente y mensajes de error/éxito propios del panel */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--rojo-urgente); /* Se pone rojo si el navegador lo soporta */
+    cursor: pointer;
+}
+
+.checkbox-group label {
+    margin-bottom: 0;
+    color: var(--texto);
+    cursor: pointer;
+}
+
+.feedback-msg {
+    font-size: 0.9rem;
+    margin-top: 15px;
+    text-align: center;
+    display: none;
+    font-weight: 600;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.feedback-msg.exito {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.feedback-msg.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}

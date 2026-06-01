@@ -1,0 +1,71 @@
+/* --- ESPECÍFICO DEL LOGIN --- */
+
+/* Centramos el contenido en la pantalla */
+.app-main {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Para que en móvil no se pegue al centro exacto */
+}
+
+.login-container {
+    width: 100%; /* Adaptable 100% al móvil */
+    max-width: 400px; /* Tope en PC */
+    margin-top: 40px;
+    background: var(--blanco);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border-top: 5px solid var(--verde-oscuro);
+}
+
+.form-group { margin-bottom: 20px; }
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--verde-oscuro);
+    font-size: 0.9rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus { border-color: var(--verde-oscuro); }
+
+.btn-principal {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--verde-oscuro);
+    color: var(--blanco);
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-principal:hover { background-color: #12351f; }
+
+.error-msg {
+    color: var(--rojo-urgente);
+    font-size: 0.85rem;
+    margin-top: 15px;
+    text-align: center;
+    display: none;
+    font-weight: 600;
+}
