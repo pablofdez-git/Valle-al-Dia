@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="../css/admin_style.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../js/admin_script.js" defer></script>
-
 </head>
 <body>
 
@@ -26,35 +25,63 @@
         </button>
     </header>
 
-    <main class="app-main">
+    <main class="app-main" style="flex-direction: column; align-items: center;">
+
+        <!-- BLOQUE 1: CREAR NUEVA -->
         <div class="panel-container">
             <h2 class="titulo-seccion" style="border: none; margin-bottom: 5px;">Publicar Noticia</h2>
-            <p style="color: #666; font-size: 0.9rem; margin-bottom: 25px;">Rellena los datos para que aparezcan en el tablón principal.</p>
-
             <form id="form-noticia">
                 <div class="form-group">
-                    <label for="titulo">Título de la noticia</label>
-                    <input type="text" id="titulo" required placeholder="Ej: Torneo de Tuta este finde">
+                    <label>Título de la noticia</label>
+                    <input type="text" id="titulo" required>
                 </div>
-
                 <div class="form-group">
-                    <label for="contenido">Descripción detallada</label>
-                    <textarea id="contenido" rows="5" required placeholder="Escribe aquí toda la información..."></textarea>
+                    <label>Descripción detallada</label>
+                    <textarea id="contenido" rows="4" required></textarea>
                 </div>
-
                 <div class="form-group checkbox-group">
                     <input type="checkbox" id="urgente">
-                    <label for="urgente">Marcar como URGENTE (saldrá en rojo)</label>
+                    <label for="urgente">Marcar como URGENTE</label>
                 </div>
-
-                <button type="submit" class="btn-principal" id="btn-publicar">
-                    <span class="material-symbols-rounded">send</span>
-                    Publicar Noticia
+                <button type="submit" class="btn-principal">
+                    <span class="material-symbols-rounded">send</span> Publicar
                 </button>
-
-                <p id="mensaje-exito" class="feedback-msg exito">¡Noticia publicada con éxito!</p>
-                <p id="mensaje-error-panel" class="feedback-msg error">Hubo un error al publicar.</p>
+                <p id="mensaje-exito" class="feedback-msg exito">¡Noticia publicada!</p>
             </form>
+        </div>
+
+        <!-- BLOQUE 2: GESTIONAR EXISTENTES -->
+        <div class="panel-container" style="margin-top: 20px;">
+            <h2 class="titulo-seccion" style="border: none; margin-bottom: 15px;">Modificar o Eliminar</h2>
+            <div id="lista-noticias-admin" class="admin-grid-avisos">
+                <!-- Se rellena con JS -->
+            </div>
+        </div>
+
+        <!-- VENTANA EMERGENTE PARA EDITAR (Esto es lo que faltaba) -->
+        <div id="modal-editar" class="modal-overlay">
+            <div class="modal-content">
+                <button id="btn-cerrar-edicion" class="btn-cerrar-modal"><span class="material-symbols-rounded">close</span></button>
+                <h2 style="color: var(--verde-oscuro); margin-bottom: 20px;">Editar Noticia</h2>
+
+                <form id="form-editar">
+                    <div class="form-group">
+                        <label>Título</label>
+                        <input type="text" id="edit-titulo" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Descripción</label>
+                        <textarea id="edit-contenido" rows="5" required></textarea>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="edit-urgente">
+                        <label for="edit-urgente">URGENTE</label>
+                    </div>
+                    <button type="submit" class="btn-principal" style="background-color: var(--amarillo-trigo); color: #333;">
+                        <span class="material-symbols-rounded">update</span> Guardar Cambios
+                    </button>
+                </form>
+            </div>
         </div>
     </main>
 

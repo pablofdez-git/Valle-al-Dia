@@ -107,3 +107,36 @@ textarea {
     color: #721c24;
     border: 1px solid #f5c6cb;
 }
+
+/* Lista compacta con scroll (solo 5 elementos aprox) */
+.admin-grid-avisos {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 320px; /* Aquí está la magia: esto equivale a ~5 noticias */
+    overflow-y: auto; /* Activa el scroll interno si hay más */
+    padding-right: 5px; /* Para que la barra de scroll no pise el texto */
+}
+
+/* Ponemos la barra de scroll bonita */
+.admin-grid-avisos::-webkit-scrollbar { width: 6px; }
+.admin-grid-avisos::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+
+/* Tarjeta minimalista (solo titulo y botones) */
+.admin-aviso-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 12px;
+    background: #fafafa;
+}
+
+.admin-aviso-card h4 {
+    margin-bottom: 0;
+    color: var(--verde-oscuro);
+    font-size: 0.95rem;
+    flex-grow: 1; /* El texto ocupa el espacio sobrante */
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; /* Corta el texto si es muy largo */
+}

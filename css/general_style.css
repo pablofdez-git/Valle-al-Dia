@@ -22,6 +22,12 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
+}
+
+p, h1, h2, h3, span, a {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 /* --- CABECERA COMPARTIDA --- */
@@ -77,3 +83,40 @@ body {
     padding-bottom: 5px;
     display: inline-block;
 }
+
+/* --- VENTANAS EMERGENTES (MODALES) GLOBALES --- */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* Fondo oscurecido */
+    display: none; /* Oculto por defecto */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px;
+    backdrop-filter: blur(3px); /* Efecto cristal para que quede pro */
+}
+
+.modal-overlay.activo { display: flex; }
+
+.modal-content {
+    background: var(--blanco);
+    width: 100%;
+    max-width: 500px; /* Ancho máximo en PC */
+    border-radius: 12px;
+    padding: 25px;
+    position: relative;
+    max-height: 90vh; /* Que no se salga de la pantalla por alto */
+    overflow-y: auto; /* Scroll interno si el bando es el Quijote */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.btn-cerrar-modal {
+    position: absolute;
+    top: 15px; right: 15px;
+    background: none; border: none;
+    font-size: 24px; color: #888;
+    cursor: pointer; transition: color 0.2s;
+}
+
+.btn-cerrar-modal:hover { color: var(--rojo-urgente); }
