@@ -24,30 +24,48 @@ body {
 
 /* --- CABECERA --- */
 .app-header {
-    background-color: var(--verde-oscuro);
-    color: var(--blanco);
-    padding: 15px 20px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    background-color: #fcfbf8; /* El tono crema de tu logo */
+    padding: 12px 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
     position: sticky;
     top: 0;
     z-index: 100;
+    /* Flexbox para mandar el logo a la izquierda y el icono a la derecha */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .logo-container {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
 }
 
 .logo-text {
     font-size: 1.3rem;
-    font-weight: 600;
+    font-weight: 700;
+    color: var(--verde-oscuro);
 }
 
 .logo-img {
-    height: 45px; /* Altura perfecta para una barra superior de móvil */
-    width: auto;  /* Para que no se deforme */
+    height: 45px;
+    width: auto;
     display: block;
+}
+
+/* El botón de tu panel de gestión */
+.btn-secreto {
+    color: var(--verde-oscuro);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    opacity: 0.3;
+    transition: opacity 0.2s ease;
+}
+
+.btn-secreto:hover {
+    opacity: 1;
 }
 
 /* --- CONTENIDO (MÓVIL POR DEFECTO) --- */
