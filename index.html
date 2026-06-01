@@ -12,6 +12,16 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/index_script.js" defer></script>
+
+    <!-- Enlace al Manifest para Android/Chrome -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1a4d2e">
+
+    <!-- Etiquetas específicas para que funcione perfecto en iOS/Apple -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Valle al Día">
+    <link rel="apple-touch-icon" href="imagenes/logo-192.png">
 </head>
 <body>
 
@@ -86,6 +96,14 @@
             <span>Comarca</span>
         </a>
     </nav>
+
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js')
+          .then(() => console.log('Service Worker registrado de puta madre'))
+          .catch((error) => console.log('Fallo en el Service Worker:', error));
+      }
+    </script>
 
 </body>
 </html>
