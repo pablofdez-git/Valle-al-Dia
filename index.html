@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valle al Día</title>
+    <link rel="stylesheet" href="css/index_style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/index_script.js" defer></script>
+
+</head>
+<body>
+
+    <header class="app-header">
+            <div class="logo-container">
+                <img src="imagenes/logo.png" alt="Logo Valle al Día" class="logo-img">
+            </div>
+    </header>
+
+    <main class="app-main">
+        <h2 class="titulo-seccion">Últimos Bandos</h2>
+
+        <div id="contenedor-avisos" class="grid-avisos">
+            <div class="tarjeta-aviso skeleton-card" id="cargando-mensaje">
+                <div class="skeleton-title"></div>
+                <div class="skeleton-text"></div>
+                <div class="skeleton-text corto"></div>
+            </div>
+        </div>
+    </main>
+
+    <nav class="app-nav">
+        <a href="#" class="nav-item activo">
+            <span class="material-symbols-rounded">campaign</span>
+            <span>Bandos</span>
+        </a>
+        <a href="#" class="nav-item">
+            <span class="material-symbols-rounded">calendar_month</span>
+            <span>Agenda</span>
+        </a>
+        <a href="#" class="nav-item">
+            <span class="material-symbols-rounded">build</span>
+            <span>Averías</span>
+        </a>
+        <a href="#" class="nav-item">
+            <span class="material-symbols-rounded">public</span>
+            <span>Comarca</span>
+        </a>
+    </nav>
+
+</body>
+</html>

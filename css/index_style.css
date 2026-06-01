@@ -1,0 +1,187 @@
+:root {
+    --verde-oscuro: #1a4d2e;
+    --amarillo-trigo: #e8c366;
+    --fondo: #f4f6f5;
+    --texto: #2d3436;
+    --blanco: #ffffff;
+    --rojo-urgente: #e74c3c;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: var(--fondo);
+    color: var(--texto);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- CABECERA --- */
+.app-header {
+    background-color: var(--verde-oscuro);
+    color: var(--blanco);
+    padding: 15px 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-text {
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.logo-img {
+    height: 45px; /* Altura perfecta para una barra superior de móvil */
+    width: auto;  /* Para que no se deforme */
+    display: block;
+}
+
+/* --- CONTENIDO (MÓVIL POR DEFECTO) --- */
+.app-main {
+    padding: 20px;
+    padding-bottom: 90px; /* Hueco para el menú inferior */
+    flex-grow: 1;
+}
+
+.titulo-seccion {
+    font-size: 1.2rem;
+    color: var(--verde-oscuro);
+    margin-bottom: 20px;
+    border-bottom: 3px solid var(--amarillo-trigo);
+    padding-bottom: 5px;
+    display: inline-block;
+}
+
+/* --- TARJETAS DE AVISOS --- */
+.grid-avisos {
+    display: grid;
+    grid-template-columns: 1fr; /* Una columna en móvil */
+    gap: 15px;
+}
+
+.tarjeta-aviso {
+    background-color: var(--blanco);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    border-left: 5px solid var(--verde-oscuro);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tarjeta-aviso:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+.tarjeta-aviso.urgente {
+    border-left-color: var(--rojo-urgente);
+}
+
+.tarjeta-aviso.urgente h3 {
+    color: var(--rojo-urgente);
+}
+
+.tarjeta-aviso h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.tarjeta-aviso p {
+    font-size: 0.95rem;
+    color: #555;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.tarjeta-aviso .fecha {
+    font-size: 0.8rem;
+    color: #888;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.tarjeta-aviso .fecha .material-symbols-rounded {
+    font-size: 14px;
+}
+
+/* --- ANIMACIÓN SKELETON (CARGA) --- */
+.skeleton-card { border-left-color: #ddd; }
+.skeleton-title, .skeleton-text {
+    background: #e0e0e0;
+    border-radius: 4px;
+    animation: pulso 1.5s infinite ease-in-out;
+}
+.skeleton-title { height: 20px; width: 60%; margin-bottom: 10px; }
+.skeleton-text { height: 14px; width: 100%; margin-bottom: 8px; }
+.skeleton-text.corto { width: 40%; }
+
+@keyframes pulso {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+
+/* --- MENÚ INFERIOR --- */
+.app-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--blanco);
+    display: flex;
+    justify-content: space-around;
+    padding: 12px 0;
+    box-shadow: 0 -4px 15px rgba(0,0,0,0.05);
+    z-index: 100;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #999;
+    font-size: 0.75rem;
+    gap: 5px;
+    transition: color 0.2s ease;
+}
+
+.nav-item.activo, .nav-item:hover {
+    color: var(--verde-oscuro);
+    font-weight: 600;
+}
+
+/* --- ADAPTACIÓN PARA ORDENADOR (PANTALLA COMPLETA) --- */
+@media (min-width: 768px) {
+    .app-main {
+        padding: 40px;
+    }
+
+    /* El grid pasa a tener varias columnas en PC */
+    .grid-avisos {
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 25px;
+    }
+
+    /* El menú no tiene sentido que ocupe todo el ancho de un monitor de 24 pulgadas */
+    .app-nav {
+        justify-content: center;
+        gap: 50px;
+    }
+}
