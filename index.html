@@ -12,16 +12,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/index_script.js" defer></script>
-
-    <!-- Enlace al Manifest para Android/Chrome -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#1a4d2e">
-
-    <!-- Etiquetas específicas para que funcione perfecto en iOS/Apple -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Valle al Día">
-    <link rel="apple-touch-icon" href="imagenes/logo-192.png">
 </head>
 <body>
 
@@ -37,73 +27,93 @@
     </header>
 
     <main class="app-main">
-        <h2 class="titulo-seccion">Últimos Bandos</h2>
 
-        <!-- Aquí se cargan las tarjetas de los bandos -->
-        <div id="contenedor-avisos" class="grid-avisos">
-            <div class="tarjeta-aviso skeleton-card" id="cargando-mensaje">
-                <div class="skeleton-title"></div>
-                <div class="skeleton-text"></div>
-                <div class="skeleton-text corto"></div>
+        <!-- PESTAÑA 1: SECCIÓN DE NOTICIAS -->
+        <section id="vista-noticias" class="seccion-app activo">
+            <h2 class="titulo-seccion">Últimos Bandos</h2>
+            <div id="contenedor-avisos" class="grid-avisos"></div>
+        </section>
+
+        <!-- PESTAÑA 2: SECCIÓN DE LA AGENDA -->
+        <section id="vista-agenda" class="seccion-app">
+            <h2 class="titulo-seccion">Agenda del Pueblo</h2>
+
+            <!-- Fila de Meses con etiqueta clara -->
+            <div class="seccion-filtro-contenedor">
+                <span class="etiqueta-filtro"><span class="material-symbols-rounded">calendar_month</span> Mes:</span>
+                <div class="contenedor-scroll-horizontal">
+                    <div id="filtro-meses" class="barra-pildoras"></div>
+                </div>
             </div>
-        </div>
 
-        <!-- 1. VENTANA EMERGENTE: Para leer una noticia normal completa -->
+            <!-- Fila de Categorías con etiqueta clara (Sin emojis de teclado) -->
+            <div class="seccion-filtro-contenedor padding-top-filtros">
+                <span class="etiqueta-filtro"><span class="material-symbols-rounded">sell</span> Tipo:</span>
+                <div class="contenedor-scroll-horizontal">
+                    <div id="filtro-categorias" class="barra-pildoras">
+                        <button class="pildora-filtro activo" data-categoria="Todos">Todos</button>
+                        <button class="pildora-filtro" data-categoria="Infantil">Infantil</button>
+                        <button class="pildora-filtro" data-categoria="Fiestas">Fiestas</button>
+                        <button class="pildora-filtro" data-categoria="Deportes">Deportes</button>
+                        <button class="pildora-filtro" data-categoria="Talleres">Talleres</button>
+                        <button class="pildora-filtro" data-categoria="Cultural">Cultura</button>
+                        <button class="pildora-filtro" data-categoria="Municipal">Municipal</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenedor de tarjetas -->
+            <div id="contenedor-eventos" class="lista-eventos-flujo"></div>
+        </section>
+
+        <!-- MODALES DE LECTURA -->
         <div id="modal-noticia" class="modal-overlay">
             <div class="modal-content">
-                <button id="btn-cerrar-lectura" class="btn-cerrar-modal">
-                    <span class="material-symbols-rounded">close</span>
-                </button>
-                <span id="modal-fecha" class="fecha" style="font-size: 0.8rem; color: #888; display: block; margin-bottom: 10px;"></span>
-                <h2 id="modal-titulo" style="color: var(--verde-oscuro); margin-bottom: 15px; font-size: 1.4rem;"></h2>
-                <div id="modal-contenido" style="line-height: 1.6; color: #444; font-size: 1rem;"></div>
+                <button id="btn-cerrar-lectura" class="btn-cerrar-modal"><span class="material-symbols-rounded">close</span></button>
+                <span id="modal-fecha" class="fecha-bando-modal"></span>
+                <h2 id="modal-titulo" class="titulo-bando-modal"></h2>
+                <div id="modal-contenido" class="cuerpo-bando-modal"></div>
             </div>
         </div>
 
-        <!-- 2. VENTANA EMERGENTE: Botón del pánico / Alerta Urgente -->
-        <div id="modal-urgente" class="modal-overlay" style="z-index: 2000;">
-            <div class="modal-content" style="border-top: 5px solid var(--rojo-urgente);">
-                <button id="btn-cerrar-urgente" class="btn-cerrar-modal">
-                    <span class="material-symbols-rounded">close</span>
-                </button>
-                <h2 style="color: var(--rojo-urgente); margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
-                    <span class="material-symbols-rounded">campaign</span> ¡Última Hora!
-                </h2>
-                <h3 id="urgente-titulo" style="margin-bottom: 10px; color: #333;"></h3>
-                <p id="urgente-contenido" style="color: #555; line-height: 1.5;"></p>
-                <button id="btn-entendido-urgente" class="btn-principal" style="background-color: var(--rojo-urgente); margin-top: 20px; width: 100%;">
-                    Entendido
-                </button>
+        <div id="modal-urgente" class="modal-overlay z-index-maximo">
+            <div class="modal-content bando-urgente-modal-border">
+                <button id="btn-cerrar-urgente" class="btn-cerrar-modal"><span class="material-symbols-rounded">close</span></button>
+                <h2 class="alerta-modal-titulo"><span class="material-symbols-rounded">campaign</span> ¡Última Hora!</h2>
+                <h3 id="urgente-titulo" class="subtitulo-alerta-modal"></h3>
+                <p id="urgente-contenido" class="cuerpo-alerta-modal"></p>
+                <button id="btn-entendido-urgente" class="btn-principal btn-rojo-bg">Entendido</button>
+            </div>
+        </div>
+
+        <!-- Modal Detalles del Evento (Soporta múltiples tags) -->
+        <div id="modal-evento" class="modal-overlay">
+            <div class="modal-content agenda-modal-top-border">
+                <button id="btn-cerrar-evento" class="btn-cerrar-modal"><span class="material-symbols-rounded">close</span></button>
+                <div id="ev-modal-tags-container" class="tags-container-flex"></div>
+                <h2 id="ev-modal-titulo" class="titulo-evento-modal"></h2>
+
+                <div class="info-evento-row">
+                    <span class="material-symbols-rounded">calendar_month</span>
+                    <span id="ev-modal-fecha"></span>
+                </div>
+                <div class="info-evento-row">
+                    <span class="material-symbols-rounded">location_on</span>
+                    <span id="ev-modal-lugar"></span>
+                </div>
+
+                <hr class="separador-modal">
+                <p id="ev-modal-descripcion" class="cuerpo-evento-modal"></p>
             </div>
         </div>
     </main>
 
     <nav class="app-nav">
-        <a href="#" class="nav-item activo">
-            <span class="material-symbols-rounded">campaign</span>
-            <span>Bandos</span>
-        </a>
-        <a href="#" class="nav-item">
-            <span class="material-symbols-rounded">calendar_month</span>
-            <span>Agenda</span>
-        </a>
-        <a href="#" class="nav-item">
-            <span class="material-symbols-rounded">build</span>
-            <span>Averías</span>
-        </a>
-        <a href="#" class="nav-item">
-            <span class="material-symbols-rounded">public</span>
-            <span>Comarca</span>
-        </a>
+        <a href="#" id="nav-btn-noticias" class="nav-item activo"><span class="material-symbols-rounded">campaign</span><span>Bandos</span></a>
+        <a href="#" id="nav-btn-agenda" class="nav-item"><span class="material-symbols-rounded">calendar_month</span><span>Agenda</span></a>
+        <a href="#" id="nav-btn-averias" class="nav-item"><span class="material-symbols-rounded">build</span><span>Averías</span></a>
+        <a href="#" id="nav-btn-comarca" class="nav-item"><span class="material-symbols-rounded">public</span><span>Comarca</span></a>
     </nav>
-
-    <script>
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js')
-          .then(() => console.log('Service Worker registrado de puta madre'))
-          .catch((error) => console.log('Fallo en el Service Worker:', error));
-      }
-    </script>
 
 </body>
 </html>

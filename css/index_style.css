@@ -115,3 +115,159 @@
         gap: 50px;
     }
 }
+
+/* --- ESTILOS DE NAVEGACIÓN ENTRE SECCIONES (SPA) --- */
+.seccion-app {
+    display: none; /* Ocultas por defecto */
+    width: 100%;
+}
+.seccion-app.activo {
+    display: block; /* Solo se muestra la pestaña activa */
+}
+
+/* --- SELECTORES DESLIZABLES (MESES Y CATEGORÍAS) --- */
+.contenedor-scroll-horizontal {
+    width: 100%;
+    overflow-x: auto; /* Permite arrastrar con el dedo a los lados */
+    scrollbar-width: none; /* Oculta scroll en Firefox */
+}
+.contenedor-scroll-horizontal::-webkit-scrollbar {
+    display: none; /* Oculta scroll en Chrome/Safari (Móviles) */
+}
+
+.barra-pildoras {
+    display: flex;
+    gap: 10px;
+    padding: 5px 2px;
+    width: max-content; /* Fuerza a los botones a ponerse en fila infinita */
+}
+
+.pildora-filtro {
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    background: var(--blanco);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #555;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+/* Estado activo de los filtros */
+.pildora-filtro.activo {
+    background-color: #3b82f6; /* Azul agenda */
+    color: var(--blanco);
+    border-color: #3b82f6;
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+}
+
+.padding-top-filtros {
+    padding-top: 8px;
+    margin-bottom: 20px;
+}
+
+/* --- TARJETAS DE LA AGENDA (ESTILO CALENDARIO VINTAGE) --- */
+.lista-eventos-flujo {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-bottom: 20px;
+}
+
+.tarjeta-evento {
+    display: flex;
+    background: var(--blanco);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    border: 1px solid #eee;
+    transition: transform 0.2s;
+}
+.tarjeta-evento:active { transform: scale(0.98); }
+
+/* Bloque izquierdo: Calendario visual */
+.evento-bloque-fecha {
+    width: 65px;
+    background: #f0f4f8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px dashed #ddd;
+    flex-shrink: 0;
+}
+
+.evento-mes {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #3b82f6;
+    margin-bottom: 2px;
+}
+
+.evento-dia {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #222;
+    line-height: 1;
+}
+
+/* Bloque derecho: Textos del evento */
+.evento-detalles {
+    padding: 12px 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.evento-detalles h3 {
+    font-size: 0.95rem;
+    color: #222;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.evento-info-meta {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.evento-info-meta .material-symbols-rounded {
+    font-size: 14px;
+    color: #999;
+}
+
+/* Modificadores estéticos */
+.evento-destacado-card {
+    border-left: 4px solid #3b82f6;
+}
+
+/* --- CLASES LIMPIAS PARA LOS MODALES --- */
+.fecha-bando-modal { font-size: 0.8rem; color: #888; display: block; margin-bottom: 10px; }
+.titulo-bando-modal { color: var(--verde-oscuro); margin-bottom: 15px; font-size: 1.4rem; }
+.cuerpo-bando-modal { line-height: 1.6; color: #444; font-size: 1rem; }
+.z-index-maximo { z-index: 2000; }
+.bando-urgente-modal-border { border-top: 5px solid var(--rojo-urgente); }
+.alerta-modal-titulo { color: var(--rojo-urgente); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+.subtitulo-alerta-modal { margin-bottom: 10px; color: #333; }
+.cuerpo-alerta-modal { color: #555; line-height: 1.5; }
+.btn-rojo-bg { background-color: var(--rojo-urgente); margin-top: 20px; width: 100%; }
+
+.agenda-modal-top-border { border-top: 5px solid #3b82f6; }
+.tag-categoria-modal { display: inline-block; padding: 4px 10px; background: #e0f2fe; color: #0369a1; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-bottom: 10px; }
+.titulo-evento-modal { color: #222; margin-bottom: 15px; font-size: 1.3rem; }
+.info-evento-row { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: #555; margin-bottom: 8px; }
+.info-evento-row .material-symbols-rounded { color: #3b82f6; font-size: 18px; }
+.separador-modal { border: 0; border-top: 1px solid #eee; margin: 15px 0; }
+.cuerpo-evento-modal { line-height: 1.6; color: #444; font-size: 0.95rem; }
+
+
