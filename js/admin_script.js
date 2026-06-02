@@ -1,5 +1,5 @@
 // ==========================================================================
-// SCRIPT DE ADMINISTRACIÓN - VALLE AL DÍA (REVISADO SIN DUPLICADOS)
+// SCRIPT DE ADMINISTRACIÓN - VALLE AL DÍA (COMPLETO, REVISADO Y CON EDICIÓN)
 // ==========================================================================
 
 const supabaseUrl = 'https://brkrwzwljdhliwlwfnwl.supabase.co';
@@ -26,6 +26,13 @@ let eventosGlobales = [];
 let idEdicionEvento = null;
 
 const listaIncidencias = document.getElementById('lista-incidencias-admin');
+
+// Elementos del Directorio
+const listaDirectorio = document.getElementById('lista-directorio-admin');
+const formDirectorio = document.getElementById('form-directorio');
+const formEditarDirectorio = document.getElementById('form-editar-directorio'); // Nuevo
+let directorioGlobal = []; // Para almacenar localmente y editar rápido
+let idEdicionDirectorio = null; // Nuevo
 
 // --- 1. GESTIÓN NOTICIAS --------------------------------------------------
 async function cargarNoticiasAdmin() {
@@ -224,11 +231,146 @@ window.borrarIncidencia = async function(id, titulo) {
     }
 };
 
+
+// --- 4. GESTIÓN DE COMARCA / DIRECTORIO (CON EDICIÓN INTEGRADA) -----------
+async function cargarDirectorioAdmin() {
+    if (!listaDirectorio) return;
+
+    const { data: registros, error } = await clienteSupabase
+        .from('directorio')
+        .select('*')
+        .order('tipo', { ascending: true });
+
+    if (error) return;
+    directorioGlobal = registros || []; // Guardamos en memoria local para editar veloz
+
+    listaDirectorio.innerHTML = '';
+
+    if (!directorioGlobal || directorioGlobal.length === 0) {
+        listaDirectorio.innerHTML = '<p style="color:#666; padding:10px; font-size:0.85rem;">No hay elementos en el directorio.</p>';
+        return;
+    }
+
+    directorioGlobal.forEach(reg => {
+        const div = document.createElement('div');
+        div.className = 'admin-aviso-card';
+        const tituloSeguro = reg.titulo.replace(/'/g, "\\'");
+
+        let prefijo = '🏥';
+        if (reg.tipo === 'Vendedor') prefijo = '🚚';
+        if (reg.tipo === 'Pueblos') prefijo = '📍';
+
+        // Modificado: Añadido el botón azul de editar al lado de la papelera
+        div.innerHTML = `
+            <h4>${prefijo} [${reg.tipo}] ${reg.titulo}</h4>
+            <div class="admin-acciones">
+                <button type="button" class="btn-accion btn-editar btn-agenda-color" onclick="abrirModalEdicionDirectorio('${reg.id}')" title="Editar información">
+                    <span class="material-symbols-rounded">edit</span>
+                </button>
+                <button type="button" class="btn-accion btn-borrar" onclick="borrarElementoDirectorio('${reg.id}', '${tituloSeguro}')" title="Eliminar del directorio">
+                    <span class="material-symbols-rounded">delete</span>
+                </button>
+            </div>
+        `;
+        listaDirectorio.appendChild(div);
+    });
+}
+
+if (formDirectorio) {
+    formDirectorio.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const tipo = document.getElementById('dir-tipo').value;
+        const titulo = document.getElementById('dir-titulo').value;
+        const subtitulo = document.getElementById('dir-subtitulo').value || null;
+        const fecha_val = document.getElementById('dir-fecha').value;
+        const fecha_evento = fecha_val ? fecha_val : null;
+        const enlace_externo = document.getElementById('dir-enlace').value || null;
+        const descripcion = document.getElementById('dir-descripcion').value;
+
+        const { error } = await clienteSupabase
+            .from('directorio')
+            .insert([{ tipo, titulo, subtitulo, fecha_evento, enlace_externo, descripcion }]);
+
+        if (error) {
+            alert("Error al guardar en el directorio.");
+        } else {
+            formDirectorio.reset();
+            cargarDirectorioAdmin();
+        }
+    });
+}
+
+// Función para rellenar los campos y levantar el modal de edición del directorio
+window.abrirModalEdicionDirectorio = function(id) {
+    const reg = directorioGlobal.find(d => String(d.id) === String(id));
+    if (!reg) return;
+
+    idEdicionDirectorio = id;
+    document.getElementById('edit-dir-tipo').value = reg.tipo;
+    document.getElementById('edit-dir-titulo').value = reg.titulo;
+    document.getElementById('edit-dir-subtitulo').value = reg.subtitulo || '';
+    document.getElementById('edit-dir-fecha').value = reg.fecha_evento || '';
+    document.getElementById('edit-dir-enlace').value = reg.enlace_externo || '';
+    document.getElementById('edit-dir-descripcion').value = reg.descripcion;
+
+    document.getElementById('modal-editar-directorio').classList.add('activo');
+};
+
+// Cerrar el modal del directorio
+if(document.getElementById('btn-cerrar-edicion-dir')) {
+    document.getElementById('btn-cerrar-edicion-dir').onclick = () => {
+        document.getElementById('modal-editar-directorio').classList.remove('activo');
+    };
+}
+
+// Escuchar el envío del formulario de edición modificado
+if (formEditarDirectorio) {
+    formEditarDirectorio.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const tipo = document.getElementById('edit-dir-tipo').value;
+        const titulo = document.getElementById('edit-dir-titulo').value;
+        const subtitulo = document.getElementById('edit-dir-subtitulo').value || null;
+        const fecha_val = document.getElementById('edit-dir-fecha').value;
+        const fecha_evento = fecha_val ? fecha_val : null;
+        const enlace_externo = document.getElementById('edit-dir-enlace').value || null;
+        const descripcion = document.getElementById('edit-dir-descripcion').value;
+
+        const { error } = await clienteSupabase
+            .from('directorio')
+            .update({ tipo, titulo, subtitulo, fecha_evento, enlace_externo, descripcion })
+            .eq('id', idEdicionDirectorio);
+
+        if (error) {
+            alert("No se pudieron guardar los cambios.");
+        } else {
+            document.getElementById('modal-editar-directorio').classList.remove('activo');
+            cargarDirectorioAdmin();
+        }
+    });
+}
+
+window.borrarElementoDirectorio = async function(id, titulo) {
+    if (!confirm(`¿Seguro que quieres eliminar "${titulo}" del directorio público?`)) return;
+
+    const { error } = await clienteSupabase
+        .from('directorio')
+        .delete()
+        .eq('id', id);
+
+    if (error) {
+        alert("No se pudo borrar el elemento.");
+    } else {
+        cargarDirectorioAdmin();
+    }
+};
+
 // --- ARRANQUE GLOBAL Y LOGOUT ----------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
     cargarNoticiasAdmin();
     cargarEventosAdmin();
     cargarIncidenciasAdmin();
+    cargarDirectorioAdmin();
 });
 
 btnLogout.onclick = async () => { await clienteSupabase.auth.signOut(); window.location.href = 'login.html'; };

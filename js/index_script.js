@@ -17,15 +17,18 @@ const nombresMeses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "S
 function inicializarNavegacion() {
     const btnNoticias = document.getElementById('nav-btn-noticias');
     const btnAgenda = document.getElementById('nav-btn-agenda');
-    const btnAverias = document.getElementById('nav-btn-averias'); // Nuevo botón
+    const btnAverias = document.getElementById('nav-btn-averias');
+    const btnComarca = document.getElementById('nav-btn-comarca'); // Nuevo botón
 
     const vistaNoticias = document.getElementById('vista-noticias');
     const vistaAgenda = document.getElementById('vista-agenda');
-    const vistaAverias = document.getElementById('vista-averias'); // Nueva vista
+    const vistaAverias = document.getElementById('vista-averias');
+    const vistaComarca = document.getElementById('vista-comarca'); // Nueva vista
 
     btnNoticias.addEventListener('click', (e) => { e.preventDefault(); cambiarPestaña(btnNoticias, vistaNoticias); });
     btnAgenda.addEventListener('click', (e) => { e.preventDefault(); cambiarPestaña(btnAgenda, vistaAgenda); cargarAgendaPueblo(); });
     btnAverias.addEventListener('click', (e) => { e.preventDefault(); cambiarPestaña(btnAverias, vistaAverias); });
+    btnComarca.addEventListener('click', (e) => { e.preventDefault(); cambiarPestaña(btnComarca, vistaComarca); cargarComarcaPueblo(); }); // Nueva acción
 }
 
 function cambiarPestaña(botonActivo, vistaActiva) {
@@ -314,3 +317,91 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-cerrar-lectura').onclick = () => document.getElementById('modal-noticia').classList.remove('activo');
     document.getElementById('btn-cerrar-evento').onclick = () => document.getElementById('modal-evento').classList.remove('activo');
 });
+
+// ==========================================
+// SECCIÓN 6: LÓGICA DE COMARCA / DIRECTORIO
+// ==========================================
+async function cargarComarcaPueblo() {
+    const divServicios = document.getElementById('directorio-servicios');
+    const divVendedores = document.getElementById('directorio-vendedores');
+    const divPueblos = document.getElementById('directorio-pueblos');
+
+    if (!divServicios || !divVendedores || !divPueblos) return;
+
+    divServicios.innerHTML = '<p style="color:#888; font-size:0.85rem; padding:10px;">Cargando...</p>';
+    divVendedores.innerHTML = '<p style="color:#888; font-size:0.85rem; padding:10px;">Cargando...</p>';
+    divPueblos.innerHTML = '<p style="color:#888; font-size:0.85rem; padding:10px;">Cargando...</p>';
+
+    try {
+        const { data: registros, error } = await clienteSupabase
+            .from('directorio')
+            .select('*');
+
+        if (error) throw error;
+
+        // Limpiamos los contenedores
+        divServicios.innerHTML = '';
+        divVendedores.innerHTML = '';
+        divPueblos.innerHTML = '';
+
+        // Filtramos y separamos los datos
+        const servicios = registros.filter(r => r.tipo === 'Servicio');
+        const vendedores = registros.filter(r => r.tipo === 'Vendedor');
+        const pueblos = registros.filter(r => r.tipo === 'Pueblos');
+
+        // ORDENACIÓN CLAVE: Los eventos de otros pueblos se ordenan por fecha (más cercanos primero)
+        // Los eventos pasados o sin fecha se van al fondo
+        pueblos.sort((a, b) => {
+            if (!a.fecha_evento) return 1;
+            if (!b.fecha_evento) return -1;
+            return new Date(a.fecha_evento) - new Date(b.fecha_evento);
+        });
+
+        // Pintamos Servicios Municipales
+        if (servicios.length === 0) divServicios.innerHTML = '<p style="color:#999; font-size:0.85rem; padding:5px;">No hay servicios registrados.</p>';
+        servicios.forEach(r => divServicios.appendChild(crearTarjetaDirectorio(r)));
+
+        // Pintamos Vendedores
+        if (vendedores.length === 0) divVendedores.innerHTML = '<p style="color:#999; font-size:0.85rem; padding:5px;">Sin visitas programadas.</p>';
+        vendedores.forEach(r => divVendedores.appendChild(crearTarjetaDirectorio(r)));
+
+        // Pintamos Eventos de Pueblos Vecinos
+        if (pueblos.length === 0) divPueblos.innerHTML = '<p style="color:#999; font-size:0.85rem; padding:5px;">No hay eventos comarcales anunciados.</p>';
+        pueblos.forEach(r => divPueblos.appendChild(crearTarjetaDirectorio(r, true)));
+
+    } catch (err) {
+        console.error(err);
+        divServicios.innerHTML = '<p style="color:red; font-size:0.85rem;">Error de conexión.</p>';
+    }
+}
+
+// Función auxiliar para construir la tarjeta visual limpia
+function crearTarjetaDirectorio(reg, esPueblo = false) {
+    const card = document.createElement('div');
+    card.className = 'tarjeta-directorio-item';
+
+    let linkHTML = '';
+    if (reg.enlace_externo) {
+        // Si tiene enlace, le ponemos un botoncito limpio para abrir la info externa
+        linkHTML = `<a href="${reg.enlace_externo}" target="_blank" class="btn-link-directorio">Ver información →</a>`;
+    }
+
+    let fechaHTML = '';
+    if (esPueblo && reg.fecha_evento) {
+        const f = new Date(reg.fecha_evento);
+        fechaHTML = `<span class="badge-fecha-comarca">${f.toLocaleDateString('es-ES', {day:'2-digit', month:'short'})}</span>`;
+    }
+
+    card.innerHTML = `
+        <div class="directorio-card-header">
+            <div>
+                <h4>${reg.titulo}</h4>
+                ${reg.subtitulo ? `<span class="directorio-sub">${reg.subtitulo}</span>` : ''}
+            </div>
+            ${fechaHTML}
+        </div>
+        <p class="directorio-desc">${reg.descripcion}</p>
+        ${linkHTML}
+    `;
+    return card;
+}

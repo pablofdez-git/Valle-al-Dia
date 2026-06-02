@@ -209,6 +209,121 @@
                 </div>
             </div>
         </section>
+
+<!-- ========================================== -->
+        <!-- BLOQUE INFERIOR: GESTIÓN DE COMARCA        -->
+        <!-- ========================================== -->
+        <section id="seccion-gestion-comarca" class="columna-admin-ancho-completo margin-top-bloque">
+            <div class="panel-container bando-border" style="max-width: 100%; border-top-color: #3b82f6;">
+                <h2 class="titulo-seccion" style="color: #3b82f6;">Administrar Directorio e Info Comarcal</h2>
+                <p style="color: #666; font-size: 0.85rem; margin-bottom: 25px;">Añade o elimina servicios locales, camiones ambulantes o eventos de otros pueblos de la comarca.</p>
+
+                <div class="form-row-doble">
+                    <!-- Formulario de Inserción (Izquierda en PC) -->
+                    <form id="form-directorio" class="flex-1" style="max-width: 500px;">
+                        <div class="form-group">
+                            <label for="dir-tipo">¿Qué tipo de información es?</label>
+                            <!-- Corregido: Quitados los textos raros y aplicada la clase select-admin -->
+                            <select id="dir-tipo" class="select-admin" required>
+                                <option value="Servicio">🏥 Servicio en el Municipio</option>
+                                <option value="Vendedor">🚚 Vendedor / Camión Ambulante</option>
+                                <option value="Pueblos">📍 Evento en Pueblo Vecino</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dir-titulo">Nombre / Entidad / Pueblo</label>
+                            <input type="text" id="dir-titulo" required placeholder="Ej: Consultorio Médico / Panadero / Cevico de la Torre">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dir-subtitulo">Subtítulo u Organización (Opcional)</label>
+                            <input type="text" id="dir-subtitulo" placeholder="Ej: Enfermería / Pasa por la mañana / Semana Cultural">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dir-fecha">Fecha del Evento (Solo para pueblos vecinos)</label>
+                            <input type="date" id="dir-fecha">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dir-enlace">Enlace Web o Teléfono de información (Opcional)</label>
+                            <input type="text" id="dir-enlace" placeholder="Ej: https://www.ayto... o Tel: 600000000">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dir-descripcion">Detalles, Horarios o Fechas claras</label>
+                            <textarea id="dir-descripcion" rows="3" required placeholder="Ej: Martes de 10:00 a 11:30h / Viene los viernes a las 12:00h en la plaza / Del 4 al 9 de agosto, grandes verbenas."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-principal" style="background-color: #3b82f6;">
+                            <span class="material-symbols-rounded">add_circle</span> Guardar en Directorio
+                        </button>
+                    </form>
+
+                    <!-- Lista de elementos activos para poder borrarlos (Derecha en PC) -->
+                    <div class="flex-1" style="background: #fafafa; padding: 20px; border-radius: 8px; border: 1px solid #ddd;">
+                        <h3 style="font-size: 1rem; color: #333; margin-bottom: 15px; font-weight: 600;">Elementos Activos en la Web</h3>
+                        <div id="lista-directorio-admin" class="admin-grid-avisos" style="max-height: 400px;">
+                            <!-- Se rellena con JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main> <!-- Cierre del main -->
+
+    <!-- ========================================== -->
+    <!-- MODAL NUEVO: EDICIÓN DEL DIRECTORIO        -->
+    <!-- ========================================== -->
+    <div id="modal-editar-directorio" class="modal-overlay">
+        <div class="modal-content" style="border-top: 5px solid #3b82f6;">
+            <button type="button" id="btn-cerrar-edicion-dir" class="btn-cerrar-modal">
+                <span class="material-symbols-rounded">close</span>
+            </button>
+            <h2 class="titulo-seccion" style="color: #3b82f6; margin-bottom: 20px;">Modificar Elemento del Directorio</h2>
+
+            <form id="form-editar-directorio">
+                <div class="form-group">
+                    <label for="edit-dir-tipo">Tipo de información</label>
+                    <select id="edit-dir-tipo" class="select-admin" required>
+                        <option value="Servicio">🏥 Servicio en el Municipio</option>
+                        <option value="Vendedor">🚚 Vendedor / Camión Ambulante</option>
+                        <option value="Pueblos">📍 Evento en Pueblo Vecino</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-dir-titulo">Nombre / Entidad / Pueblo</label>
+                    <input type="text" id="edit-dir-titulo" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-dir-subtitulo">Subtítulo (Opcional)</label>
+                    <input type="text" id="edit-dir-subtitulo">
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-dir-fecha">Fecha del Evento</label>
+                    <input type="date" id="edit-dir-fecha">
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-dir-enlace">Enlace Web o Contacto</label>
+                    <input type="text" id="edit-dir-enlace">
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-dir-descripcion">Detalles u Horarios</label>
+                    <textarea id="edit-dir-descripcion" rows="4" required></textarea>
+                </div>
+
+                <button type="submit" class="btn-principal" style="background-color: #3b82f6;">
+                    <span class="material-symbols-rounded">save</span> Guardar Cambios
+                </button>
+            </form>
+        </div>
+    </div>
     </main>
 
 </body>

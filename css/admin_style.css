@@ -349,3 +349,9 @@ textarea {
 }
 
 .check-cat-label input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; }
+
+/* Asegura que la gestión del directorio ocupe todo el ancho inferior */
+.columna-admin-ancho-completo {
+    grid-column: 1 / -1;
+    width: 100%;
+}
