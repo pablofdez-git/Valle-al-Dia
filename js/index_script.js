@@ -11,14 +11,21 @@ let mesSeleccionado = "Todos";
 let categoriaSeleccionada = "Todos";
 const nombresMeses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
 
+// ==========================================
+// SECCIÓN 1: CONTROLADOR DE PESTAÑAS (SPA)
+// ==========================================
 function inicializarNavegacion() {
     const btnNoticias = document.getElementById('nav-btn-noticias');
     const btnAgenda = document.getElementById('nav-btn-agenda');
+    const btnAverias = document.getElementById('nav-btn-averias'); // Nuevo botón
+
     const vistaNoticias = document.getElementById('vista-noticias');
     const vistaAgenda = document.getElementById('vista-agenda');
+    const vistaAverias = document.getElementById('vista-averias'); // Nueva vista
 
     btnNoticias.addEventListener('click', (e) => { e.preventDefault(); cambiarPestaña(btnNoticias, vistaNoticias); });
     btnAgenda.addEventListener('click', (e) => { e.preventDefault(); cambiarPestaña(btnAgenda, vistaAgenda); cargarAgendaPueblo(); });
+    btnAverias.addEventListener('click', (e) => { e.preventDefault(); cambiarPestaña(btnAverias, vistaAverias); });
 }
 
 function cambiarPestaña(botonActivo, vistaActiva) {
@@ -29,6 +36,9 @@ function cambiarPestaña(botonActivo, vistaActiva) {
     window.scrollTo({ top: 0 });
 }
 
+// ==========================================
+// SECCIÓN 2: LÓGICA DE BANDOS / NOTICIAS
+// ==========================================
 async function cargarBandos() {
     try {
         const { data: avisos, error } = await clienteSupabase.from('avisos').select('*').order('created_at', { ascending: false });
@@ -74,6 +84,9 @@ async function cargarBandos() {
     } catch (error) { contenedorAvisos.innerHTML = '<p style="color: red; padding: 20px;">Error.</p>'; }
 }
 
+// ==========================================
+// SECCIÓN 3: LÓGICA DE LA AGENDA
+// ==========================================
 async function cargarAgendaPueblo() {
     try {
         contenedorEventos.innerHTML = '<p style="padding:20px; color:#666;">Buscando eventos...</p>';
@@ -121,7 +134,6 @@ function filtrarYMostrarEventos() {
         const fechaEv = new Date(ev.fecha_inicio);
         const cumpleMes = (mesSeleccionado === "Todos" || fechaEv.getMonth() === mesSeleccionado);
 
-        // Manejo de categoría única o array (Multi-categoría)
         let cumpleCat = false;
         if (categoriaSeleccionada === "Todos") {
             cumpleCat = true;
@@ -164,7 +176,6 @@ function filtrarYMostrarEventos() {
             const containerTags = document.getElementById('ev-modal-tags-container');
             containerTags.innerHTML = '';
 
-            // Pintar múltiples categorías si es un Array
             const cats = Array.isArray(ev.categoria) ? ev.categoria : [ev.categoria];
             cats.forEach(c => {
                 const span = document.createElement('span');
@@ -174,7 +185,7 @@ function filtrarYMostrarEventos() {
             });
 
             document.getElementById('ev-modal-titulo').innerText = ev.titulo;
-            document.getElementById('ev-modal-fecha').innerText = fecha.toLocaleDateString('es-ES', opcionesFecha) + " h";
+            document.getElementById('ev-modal-fecha').innerText = fecha.toLocaleDateString('es-ES', optionsFecha) + " h";
             document.getElementById('ev-modal-lugar').innerText = ev.lugar;
             document.getElementById('ev-modal-descripcion').innerText = ev.descripcion || "Sin descripción.";
             document.getElementById('modal-evento').classList.add('activo');
@@ -194,14 +205,6 @@ function configurarFiltrosCategoria() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    cargarBandos();
-    inicializarNavegacion();
-    configurarFiltrosCategoria();
-    document.getElementById('btn-cerrar-lectura').onclick = () => document.getElementById('modal-noticia').classList.remove('activo');
-    document.getElementById('btn-cerrar-evento').onclick = () => document.getElementById('modal-evento').classList.remove('activo');
-});
-
 // ==========================================
 // SECCIÓN 4: ACCESIBILIDAD (TAMAÑO DE LETRA)
 // ==========================================
@@ -209,15 +212,9 @@ function inicializarAccesibilidad() {
     const btnMas = document.getElementById('btn-fuente-mas');
     const btnMenos = document.getElementById('btn-fuente-menos');
     const htmlElement = document.documentElement;
-
-    // Tamaños permitidos en píxeles para la fuente base
     const tamaños = [14, 16, 19, 22];
-    // 16px es normal, 19px es grande, 22px es para verla desde el espacio
-
-    // Recuperamos si ya tenía un tamaño guardado, si no, usamos 16 (índice 1)
     let indiceActual = parseInt(localStorage.getItem('user_font_index')) || 1;
 
-    // Aplicamos el tamaño guardado al arrancar
     htmlElement.style.fontSize = `${tamaños[indiceActual]}px`;
 
     if (btnMas && btnMenos) {
@@ -228,7 +225,6 @@ function inicializarAccesibilidad() {
                 localStorage.setItem('user_font_index', indiceActual);
             }
         });
-
         btnMenos.addEventListener('click', () => {
             if (indiceActual > 0) {
                 indiceActual--;
@@ -239,12 +235,81 @@ function inicializarAccesibilidad() {
     }
 }
 
-// Asegúrate de meter la función dentro del DOMContentLoaded que ya tienes
+// ==========================================
+// SECCIÓN 5: LÓGICA DE AVERÍAS / INCIDENCIAS (NUEVA)
+// ==========================================
+function inicializarFormularioAverias() {
+    const chkAnonimo = document.getElementById('inc-anonimo');
+    const wrapperNombre = document.getElementById('wrapper-nombre-vecino');
+    const formIncidencia = document.getElementById('form-incidencia');
+    const msgExito = document.getElementById('inc-mensaje-exito');
+    const msgError = document.getElementById('inc-mensaje-error');
+    const inputNombre = document.getElementById('inc-nombre');
+
+    if (!formIncidencia) return;
+
+    // LÓGICA CORREGIDA: Al arrancar, si está marcado (Anónimo), la caja debe estar oculta
+    if (chkAnonimo.checked) {
+        wrapperNombre.classList.remove('mostrar');
+        if(inputNombre) inputNombre.required = false;
+    } else {
+        wrapperNombre.classList.add('mostrar');
+        if(inputNombre) inputNombre.required = true;
+    }
+
+    // Escuchamos los cambios en la casilla
+    chkAnonimo.addEventListener('change', function() {
+        if (this.checked) {
+            // Si es ANÓNIMO, escondemos el campo y limpiamos lo escrito
+            wrapperNombre.classList.remove('mostrar');
+            inputNombre.required = false;
+            inputNombre.value = '';
+        } else {
+            // Si NO es anónimo, desplegamos la caja para que ponga su nombre
+            wrapperNombre.classList.add('connected'); // Evita saltos raros
+            wrapperNombre.classList.add('mostrar');
+            inputNombre.required = true;
+        }
+    });
+
+    formIncidencia.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        msgExito.style.display = 'none';
+        msgError.style.display = 'none';
+
+        const titulo = document.getElementById('inc-titulo').value;
+        const lugar = document.getElementById('inc-lugar').value;
+        const descripcion = document.getElementById('inc-descripcion').value;
+        const anonimo = chkAnonimo.checked;
+        const nombre_vecino = anonimo ? "Anónimo" : inputNombre.value;
+
+        try {
+            const { error } = await clienteSupabase
+                .from('incidencias')
+                .insert([{ titulo, lugar, descripcion, anonimo, nombre_vecino }]);
+
+            if (error) throw error;
+
+            msgExito.style.display = 'block';
+            formIncidencia.reset();
+            wrapperNombre.classList.remove('mostrar');
+
+            setTimeout(() => { msgExito.style.display = 'none'; }, 4000);
+
+        } catch (err) {
+            console.error(err);
+            msgError.style.display = 'block';
+        }
+    });
+}
+
+// ARRANQUE GLOBAL
 document.addEventListener('DOMContentLoaded', () => {
     cargarBandos();
     inicializarNavegacion();
     configurarFiltrosCategoria();
-    inicializarAccesibilidad(); // <-- AÑADE ESTA LÍNEA AQUÍ
+    inicializarAccesibilidad();
+    inicializarFormularioAverias(); // <-- Lanzamos el proceso de incidencias
 
     document.getElementById('btn-cerrar-lectura').onclick = () => document.getElementById('modal-noticia').classList.remove('activo');
     document.getElementById('btn-cerrar-evento').onclick = () => document.getElementById('modal-evento').classList.remove('activo');

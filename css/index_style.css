@@ -1,4 +1,6 @@
-/* --- ESPECÍFICO DE LA PÁGINA PRINCIPAL (INDEX) --- */
+/* ==========================================================================
+   CSS ESPECÍFICO DE LA PÁGINA PRINCIPAL (INDEX.HTML) - VALLE AL DÍA
+   ========================================================================== */
 
 .app-main {
     padding: 20px;
@@ -6,7 +8,7 @@
     flex-grow: 1;
 }
 
-/* --- TARJETAS DE NOTICIAS --- */
+/* --- 1. TARJETAS DE NOTICIAS / BANDOS ------------------------------------- */
 .grid-avisos {
     display: grid;
     grid-template-columns: 1fr; /* Una columna por defecto (Móvil) */
@@ -53,7 +55,7 @@
 
 .tarjeta-aviso .fecha .material-symbols-rounded { font-size: 14px; }
 
-/* --- ANIMACIÓN DE CARGA (SKELETON) --- */
+/* --- 2. ANIMACIÓN DE CARGA (SKELETON) ------------------------------------- */
 .skeleton-card { border-left-color: #ddd; }
 .skeleton-title, .skeleton-text {
     background: #e0e0e0;
@@ -70,7 +72,7 @@
     100% { opacity: 0.6; }
 }
 
-/* --- MENÚ INFERIOR --- */
+/* --- 3. MENÚ INFERIOR DE NAVEGACIÓN (MÓVIL) ------------------------------- */
 .app-nav {
     position: fixed;
     bottom: 0;
@@ -100,23 +102,7 @@
     font-weight: 600;
 }
 
-/* --- ADAPTACIÓN A PC --- */
-@media (min-width: 768px) {
-    .app-main { padding: 40px; }
-
-    .grid-avisos {
-        /* En PC hace magia y mete todas las columnas que quepan */
-        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-        gap: 25px;
-    }
-
-    .app-nav {
-        justify-content: center;
-        gap: 50px;
-    }
-}
-
-/* --- ESTILOS DE NAVEGACIÓN ENTRE SECCIONES (SPA) --- */
+/* --- 4. SISTEMA DE NAVEGACIÓN EN PESTAÑAS (SPA) --------------------------- */
 .seccion-app {
     display: none; /* Ocultas por defecto */
     width: 100%;
@@ -125,7 +111,33 @@
     display: block; /* Solo se muestra la pestaña activa */
 }
 
-/* --- SELECTORES DESLIZABLES (MESES Y CATEGORÍAS) --- */
+/* --- 5. FILTROS DE AGENDA (MESES Y CATEGORÍAS) ---------------------------- */
+.seccion-filtro-contenedor {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fdfdfd;
+    padding: 6px 10px;
+    border-radius: 8px;
+    margin-bottom: 5px;
+}
+
+.etiqueta-filtro {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #777;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.etiqueta-filtro .material-symbols-rounded {
+    font-size: 16px;
+    color: #3b82f6;
+}
+
 .contenedor-scroll-horizontal {
     width: 100%;
     overflow-x: auto; /* Permite arrastrar con el dedo a los lados */
@@ -155,7 +167,6 @@
     white-space: nowrap;
 }
 
-/* Estado activo de los filtros */
 .pildora-filtro.activo {
     background-color: #3b82f6; /* Azul agenda */
     color: var(--blanco);
@@ -168,7 +179,7 @@
     margin-bottom: 20px;
 }
 
-/* --- TARJETAS DE LA AGENDA (ESTILO CALENDARIO VINTAGE) --- */
+/* --- 6. TARJETAS DE LA AGENDA (ESTILO CALENDARIO) ------------------------- */
 .lista-eventos-flujo {
     display: flex;
     flex-direction: column;
@@ -187,7 +198,6 @@
 }
 .tarjeta-evento:active { transform: scale(0.98); }
 
-/* Bloque izquierdo: Calendario visual */
 .evento-bloque-fecha {
     width: 65px;
     background: #f0f4f8;
@@ -214,7 +224,6 @@
     line-height: 1;
 }
 
-/* Bloque derecho: Textos del evento */
 .evento-detalles {
     padding: 12px 15px;
     display: flex;
@@ -246,12 +255,138 @@
     color: #999;
 }
 
-/* Modificadores estéticos */
 .evento-destacado-card {
     border-left: 4px solid #3b82f6;
 }
 
-/* --- CLASES LIMPIAS PARA LOS MODALES --- */
+/* --- 7. FORMULARIO DE AVERÍAS / INCIDENCIAS -------------------------------- */
+.subtitulo-averias {
+    font-size: 0.85rem;
+    color: #666;
+    line-height: 1.4;
+    margin-bottom: 20px;
+}
+
+.formulario-vecino {
+    background: var(--blanco);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    border: 1px solid #eee;
+}
+
+/* Estructura vertical en columnas para que no se apilotonen */
+.formulario-vecino .form-group,
+.formulario-vecino .form-group-ocultable {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.formulario-vecino .form-group label,
+.formulario-vecino .form-group-ocultable label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--verde-oscuro);
+    font-size: 0.9rem;
+    text-align: left;
+}
+
+.formulario-vecino .form-group input[type="text"],
+.formulario-vecino .form-group textarea,
+.formulario-vecino .form-group-ocultable input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s;
+    background-color: var(--blanco);
+}
+
+.formulario-vecino .form-group input[type="text"]:focus,
+.formulario-vecino .form-group textarea:focus,
+.formulario-vecino .form-group-ocultable input[type="text"]:focus {
+    border-color: #d97706; /* Ámbar de averías */
+}
+
+.checkbox-group-incidencia {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    background: #f8fafc;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.checkbox-group-incidencia input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--verde-oscuro);
+    cursor: pointer;
+}
+
+.checkbox-group-incidencia label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #475569;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* Control dinámico de animación para desplegar el nombre */
+.form-group-ocultable {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.3s ease-out, opacity 0.3s ease-out, margin-bottom 0.3s ease-out;
+    margin-bottom: 0;
+}
+
+.form-group-ocultable.mostrar {
+    max-height: 100px;
+    opacity: 1;
+    margin-bottom: 20px;
+}
+
+.btn-averias-color {
+    background-color: #d97706 !important;
+}
+.btn-averias-color:hover {
+    background-color: #b45309 !important;
+}
+
+/* Mensajes de feedback del envío ocultos por defecto */
+.formulario-vecino .feedback-msg {
+    font-size: 0.9rem;
+    margin-top: 15px;
+    text-align: center;
+    display: none;
+    font-weight: 600;
+    padding: 12px;
+    border-radius: 6px;
+    width: 100%;
+}
+
+.formulario-vecino .feedback-msg.exito {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.formulario-vecino .feedback-msg.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* --- 8. DETALLES DE CLASES PROPIAS DE LOS MODALES DE LECTURA --------------- */
 .fecha-bando-modal { font-size: 0.8rem; color: #888; display: block; margin-bottom: 10px; }
 .titulo-bando-modal { color: var(--verde-oscuro); margin-bottom: 15px; font-size: 1.4rem; }
 .cuerpo-bando-modal { line-height: 1.6; color: #444; font-size: 1rem; }
@@ -269,5 +404,55 @@
 .info-evento-row .material-symbols-rounded { color: #3b82f6; font-size: 18px; }
 .separador-modal { border: 0; border-top: 1px solid #eee; margin: 15px 0; }
 .cuerpo-evento-modal { line-height: 1.6; color: #444; font-size: 0.95rem; }
+.tags-container-flex { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
 
+/* --- 9. ADAPTACIÓN RESPONSIVE DE BLOQUES PARA ORDENADOR (PC) --------------- */
+@media (min-width: 768px) {
+    .app-main { padding: 40px; }
 
+    .grid-avisos {
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 25px;
+    }
+
+    .app-nav {
+        justify-content: center;
+        gap: 50px;
+    }
+}
+ /* ==========================================================================
+   PARCHE DEFINITIVO: ESTILAZO PARA EL BOTÓN DE ENVIAR INCIDENCIA
+   ========================================================================== */
+
+.formulario-vecino .btn-principal {
+    width: 100% !important; /* Ocupa todo el ancho en el móvil */
+    max-width: 350px !important; /* Evita que en el ordenador sea infinito */
+    margin: 30px auto 10px auto !important; /* Centrado horizontal radical y aire arriba/abajo */
+    padding: 14px 20px !important; /* Más gordito y cómodo para el pulgar */
+    background-color: #d97706 !important; /* Ámbar corporativo de averías */
+    color: var(--blanco) !important;
+    border: none !important;
+    border-radius: 25px !important; /* Forma de píldora moderna */
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 10px !important; /* Separación perfecta entre el icono y el texto */
+    box-shadow: 0 4px 12px rgba(217, 119, 6, 0.2) !important; /* Sombra sutil del mismo color */
+    transition: all 0.2s ease !important;
+}
+
+/* Efecto flote al pasar el ratón en el PC */
+.formulario-vecino .btn-principal:hover {
+    background-color: #b45309 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 15px rgba(217, 119, 6, 0.3) !important;
+}
+
+/* Efecto click al chafar con el dedo en el móvil */
+.formulario-vecino .btn-principal:active {
+    transform: translateY(1px) !important;
+    box-shadow: 0 2px 6px rgba(217, 119, 6, 0.2) !important;
+}

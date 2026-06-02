@@ -111,6 +111,50 @@
                 <p id="ev-modal-descripcion" class="cuerpo-evento-modal"></p>
             </div>
         </div>
+        <!-- ========================================== -->
+        <!-- PESTAÑA 3: SECCIÓN DE AVERÍAS / INCIDENCIAS -->
+        <!-- ========================================== -->
+        <section id="vista-averias" class="seccion-app">
+            <h2 class="titulo-seccion">Reportar Incidencia</h2>
+            <p class="subtitulo-averias">Usa este formulario para avisar de desperfectos o mandar sugerencias al ayuntamiento de forma privada.</p>
+
+            <form id="form-incidencia" class="formulario-vecino">
+                <div class="form-group">
+                    <label for="inc-titulo">¿Qué pasa? (Título corto)</label>
+                    <input type="text" id="inc-titulo" required placeholder="Ej: Farola rota, Bache gordo...">
+                </div>
+
+                <div class="form-group">
+                    <label for="inc-lugar">¿Dónde está? (Lugar exacto)</label>
+                    <input type="text" id="inc-lugar" required placeholder="Ej: Calle Las Eras frente al número 4">
+                </div>
+
+                <div class="form-group">
+                    <label for="inc-descripcion">Explica los detalles de la avería</label>
+                    <textarea id="inc-descripcion" rows="4" required placeholder="Ej: La farola parpadea por las noches y hace ruido. Da inseguridad al callejón."></textarea>
+                </div>
+
+                <!-- Interruptor de Anónimo Estilizado -->
+                <div class="form-group checkbox-group-incidencia">
+                    <input type="checkbox" id="inc-anonimo" checked>
+                    <label for="inc-anonimo">Enviar de forma totalmente anónima</label>
+                </div>
+
+                <!-- Bloque dinámico del nombre (se oculta con CSS por defecto) -->
+                <div id="wrapper-nombre-vecino" class="form-group-ocultable">
+                    <label for="inc-nombre">Tu Nombre y Apellidos</label>
+                    <input type="text" id="inc-nombre" placeholder="Introduce tu nombre">
+                </div>
+
+                <button type="submit" class="btn-principal btn-averias-color">
+                    <span class="material-symbols-rounded">report</span> Enviar Incidencia
+                </button>
+
+                <!-- Avisos de Feedback -->
+                <p id="inc-mensaje-exito" class="feedback-msg exito">¡Incidencia enviada correctamente al ayuntamiento!</p>
+                <p id="inc-mensaje-error" class="feedback-msg error">Hubo un error de conexión, inténtalo de nuevo.</p>
+            </form>
+        </section>
     </main>
 
     <nav class="app-nav">
