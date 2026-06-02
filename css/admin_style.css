@@ -168,8 +168,12 @@ textarea {
         gap: 20px;
         align-items: start;
     }
-}
 
+    /* --- PARCHE RESPONSIVE DIRECTORIO (AÑADE ESTO AQUÍ DENTRO) --- */
+    .form-row-doble {
+        flex-direction: row; /* En PC se vuelven a poner de lado a lado */
+    }
+}
 /* --- SECCIÓN DE INCIDENCIAS (ADMIN) --- */
 .incidencias-border { border-top: 4px solid #d97706; }
 .incidencias-title-color { color: #d97706; }
@@ -279,7 +283,11 @@ textarea {
 /* --- CLASES COMPLEMENTARIAS Y MODALES --- */
 .margin-top-bloque { margin-top: 20px; }
 .no-border-bottom { border-bottom: none; margin-bottom: 15px; }
-.form-row-doble { display: flex; gap: 15px; }
+.form-row-doble {
+    display: flex;
+    flex-direction: column; /* En móvil va uno debajo del otro */
+    gap: 15px;
+}
 .flex-1 { flex: 1; }
 .margin-bottom-title { margin-bottom: 20px; }
 
