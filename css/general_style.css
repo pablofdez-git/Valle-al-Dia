@@ -16,6 +16,12 @@
     font-family: 'Poppins', sans-serif;
 }
 
+/* --- CONTROL DE FUENTE BASE PARA ACCESIBILIDAD --- */
+html {
+    font-size: 16px; /* Tamaño por defecto */
+    transition: font-size 0.2s ease; /* Transición suave para que mole más al cambiar */
+}
+
 body {
     background-color: var(--fondo);
     color: var(--texto);
@@ -23,6 +29,33 @@ body {
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
+    font-size: 1rem; /* Al usar rem, hereda directamente el tamaño del html */
+}
+
+/* --- ESTILOS BOTONES ACCESIBILIDAD --- */
+.accesibilidad-container {
+    display: flex;
+    gap: 5px;
+    margin-left: auto;
+    margin-right: 15px; /* Lo separa un poco del botón secreto */
+}
+
+.btn-accesibilidad {
+    background: #eef2f3;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #444;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-accesibilidad:active {
+    background: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
 }
 
 p, h1, h2, h3, span, a {

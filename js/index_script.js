@@ -201,3 +201,51 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-cerrar-lectura').onclick = () => document.getElementById('modal-noticia').classList.remove('activo');
     document.getElementById('btn-cerrar-evento').onclick = () => document.getElementById('modal-evento').classList.remove('activo');
 });
+
+// ==========================================
+// SECCIÓN 4: ACCESIBILIDAD (TAMAÑO DE LETRA)
+// ==========================================
+function inicializarAccesibilidad() {
+    const btnMas = document.getElementById('btn-fuente-mas');
+    const btnMenos = document.getElementById('btn-fuente-menos');
+    const htmlElement = document.documentElement;
+
+    // Tamaños permitidos en píxeles para la fuente base
+    const tamaños = [14, 16, 19, 22];
+    // 16px es normal, 19px es grande, 22px es para verla desde el espacio
+
+    // Recuperamos si ya tenía un tamaño guardado, si no, usamos 16 (índice 1)
+    let indiceActual = parseInt(localStorage.getItem('user_font_index')) || 1;
+
+    // Aplicamos el tamaño guardado al arrancar
+    htmlElement.style.fontSize = `${tamaños[indiceActual]}px`;
+
+    if (btnMas && btnMenos) {
+        btnMas.addEventListener('click', () => {
+            if (indiceActual < tamaños.length - 1) {
+                indiceActual++;
+                htmlElement.style.fontSize = `${tamaños[indiceActual]}px`;
+                localStorage.setItem('user_font_index', indiceActual);
+            }
+        });
+
+        btnMenos.addEventListener('click', () => {
+            if (indiceActual > 0) {
+                indiceActual--;
+                htmlElement.style.fontSize = `${tamaños[indiceActual]}px`;
+                localStorage.setItem('user_font_index', indiceActual);
+            }
+        });
+    }
+}
+
+// Asegúrate de meter la función dentro del DOMContentLoaded que ya tienes
+document.addEventListener('DOMContentLoaded', () => {
+    cargarBandos();
+    inicializarNavegacion();
+    configurarFiltrosCategoria();
+    inicializarAccesibilidad(); // <-- AÑADE ESTA LÍNEA AQUÍ
+
+    document.getElementById('btn-cerrar-lectura').onclick = () => document.getElementById('modal-noticia').classList.remove('activo');
+    document.getElementById('btn-cerrar-evento').onclick = () => document.getElementById('modal-evento').classList.remove('activo');
+});
