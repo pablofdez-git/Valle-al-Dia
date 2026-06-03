@@ -102,6 +102,28 @@
     font-weight: 600;
 }
 
+.nav-icon{
+    font-size: 24px;
+    margin-bottom: 4px;
+}
+
+.nav-icon-png {
+    width: 28px;  /* Le subimos a 28px para que gane el empaque que le falta */
+    height: 28px;
+    max-width: 28px;
+    max-height: 28px;
+    object-fit: contain;
+    margin-bottom: 2px; /* Ajustamos un pelín para que el texto "Comarca" quede en línea con los demás */
+    opacity: 0.4;       /* Se queda gris apagado por defecto */
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* --- ESTADO ACTIVO: Para que cuando pulses "Comarca" brille en verde --- */
+.nav-item.activo .nav-icon-png {
+    opacity: 1;         /* Brillo a tope del verde original que le has pintado */
+    transform: scale(1.05); /* El pequeño zoom elegante al seleccionarlo */
+}
+
 /* --- 4. SISTEMA DE NAVEGACIÓN EN PESTAÑAS (SPA) --------------------------- */
 .seccion-app {
     display: none; /* Ocultas por defecto */
