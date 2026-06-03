@@ -405,3 +405,50 @@ function crearTarjetaDirectorio(reg, esPueblo = false) {
     `;
     return card;
 }
+
+// LÓGICA PARA EL INSTALADOR AUTOMÁTICO DE LA PWA
+let eventoInstalacion_PWA;
+const bloqueInstalar = document.getElementById('bloque-instalar-pwa');
+const btnInstalar = document.getElementById('btn-instalar-pwa');
+
+// El navegador avisa de que la app se puede instalar
+window.addEventListener('beforeinstallprompt', (e) => {
+    // Evita que Chrome lance su propio aviso automático de primeras
+    e.preventDefault();
+    // Nos guardamos el evento para dispararlo cuando el vecino pulse el botón
+    eventoInstalacion_PWA = e;
+    // Hacemos visible nuestro banner personalizado
+    if (bloqueInstalar) {
+        bloqueInstalar.style.display = 'block';
+    }
+});
+
+// Cuando el vecino hace clic en "Instalar App de Valle"
+if (btnInstalar) {
+    btnInstalar.addEventListener('click', async () => {
+        if (!eventoInstalacion_PWA) return;
+
+        // Mostramos el menú nativo de instalación (¿Quieres instalar esta app?)
+        eventoInstalacion_PWA.prompt();
+
+        // Esperamos a ver qué responde el usuario
+        const { outcome } = await eventoInstalacion_PWA.userChoice;
+        console.log(`El usuario respondió a la instalación: ${outcome}`);
+
+        // Si acepta o si rechaza, ocultamos el banner para no ser cansinos
+        if (bloqueInstalar) {
+            bloqueInstalar.style.display = 'none';
+        }
+        // Limpiamos la variable
+        eventoInstalacion_PWA = null;
+    });
+}
+
+// Si el usuario ya la tiene instalada y la abre, ocultamos el banner por si acaso
+window.addEventListener('appinstalled', () => {
+    if (bloqueInstalar) {
+        bloqueInstalar.style.display = 'none';
+    }
+    eventoInstalacion_PWA = null;
+    console.log('¡Valle al Día instalada con éxito en el escritorio!');
+});
